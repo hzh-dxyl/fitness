@@ -1,0 +1,7 @@
+logs/
+images/
+target/
+src/test/
+.idea/
+src/main/resources/mysql.properties
+*.iml

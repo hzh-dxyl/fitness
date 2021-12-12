@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvn="http://www.springframework.org/schema/mvc"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       https://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc
+       https://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!-- 扫描注册除controller和错误以外的bean-->
+    <context:component-scan base-package="com.hzh.fitness">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+    </context:component-scan>
+    <!-- 注解扫描-->
+    <mvn:annotation-driven/>
+    <!--读取全局配置文件和数据库配置文件-->
+    <context:property-placeholder location="classpath:config.properties, classpath:mysql.properties" file-encoding="utf-8"/>
+
+    <!--配置数据源 c3p0l连接池-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="${db.driver}"/>
+        <property name="jdbcUrl" value="${db.url}"/>
+        <property name="user" value="${db.username}"/>
+        <property name="password" value="${db.password}"/>
+        <property name="initialPoolSize" value="${db.pool.initialPoolSize}"/>
+        <property name="maxPoolSize" value="${db.pool.maxPoolSize}"/>
+        <property name="minPoolSize" value="${db.pool.minPoolSize}"/>
+    </bean>
+
+    <!--配置SqlSessionFactory-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--加载xml映射文件，如果接口和xml文件位于同目录下可以省略-->
+<!--        <property name="mapperLocations" value="classpath*:com/hzh/springtest4/dao/*.xml"/>-->
+        <!--加载mybatis配置文件-->
+        <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
+        <!--数据源-->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!--Mapper批量扫描，从Mapper包扫描接口，自动创建代理对象，并在Spring容器中自动注册
+    使用 Mybatis与Spring整合包的这个 Mapper 扫描器后， Mybatis 配置文件里的扫描器，就可以取消掉了
+    遵循的规范 不变
+    自动扫描出来的Mapper的bean的id为Mapper类名（首字母小写）
+    -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--如果需要扫描多个报下的mapper,每个包中间使用半角逗号分开-->
+        <property name="basePackage" value="com.hzh.springtest4.mapper" />
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+    </bean>
+
+    <!--事务控制器
+        对mybatis操作数据库事务控制，spring使用jdbc的事务控制类
+    -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!--配置数据源-->
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+
+    <!--aop式配置事务属性-->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <!-- name属性指的是方法名，name="add*"指所有以add开头的方法-->
+            <tx:method name="*" propagation="REQUIRED" />
+        </tx:attributes>
+    </tx:advice>
+    <!--AspectJ切点执行表达式
+        execution( public * cn.hzh..*.add(..))
+                     1    2      3  4   5  6
+        1.访问修饰符-非必须
+        2.返回类型-必须 *表示所有类型
+        3.包匹配-非必须 ..表示当前包及所有子包
+        4.类匹配-非必须 *表示所有类
+        5.方法匹配-必须 方法名，*表示所有方法
+        6.参数匹配-非必须 ..表示匹配所有参数，不限类型不限个数
+    -->
+    <aop:config>
+        <!--事务aop配置-->
+        <aop:advisor advice-ref="txAdvice" pointcut="execution(* com.hzh.fitness.service.*.*(..))"/>
+        <!--普通方法aop配置-->
+<!--        <aop:aspect ref="testAspect">-->
+<!--            <aop:pointcut id="pc1" expression="execution(* com.hzh.fitness.service.*.*(..))"/>-->
+<!--            <aop:before method="before" pointcut-ref="pc1"/>-->
+<!--            <aop:after method="after" pointcut-ref="pc1"/>-->
+<!--        </aop:aspect>-->
+    </aop:config>
+
+    <!--注解声明式事务属性-->
+<!--    <tx:annotation-driven transaction-manager="transactionManager"/>-->
+
+
+
+</beans>
