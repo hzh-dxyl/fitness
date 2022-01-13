@@ -2,17 +2,17 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
        https://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/mvc
-       https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+       https://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <context:property-placeholder location="classpath:config.properties" file-encoding="utf-8"/>
 
-    <context:component-scan base-package="com.hzh.fitness.controller"/>
+    <context:component-scan base-package="com.hzh.fitness.controller,com.hzh.fitness.exception"/>
 
 <!--    允许跨域访问-->
     <mvc:cors>
@@ -61,5 +61,15 @@
         <property name="maxInMemorySize" value="40960"/>
         <property name="resolveLazily" value="true"/>
     </bean>
+
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <!--    <aop:config>-->
+    <!--        <aop:aspect ref="controllerAspect">-->
+    <!--            <aop:pointcut id="pc1" expression="execution(* com.hzh.fitness.controller.*.*(..))"/>-->
+    <!--            <aop:around method="before" pointcut="execution(* com.hzh.fitness.controller.*.put*(..))"/>-->
+    <!--            <aop:around method="around" pointcut-ref="pc1"/>-->
+    <!--        </aop:aspect>-->
+    <!--    </aop:config>-->
 
 </beans>

@@ -6,7 +6,7 @@
 <Configuration status="WARN" monitorInterval="10">
     <!--变量配置-->
     <Properties>
-        <property name="LOG_ROOT" value="C:/其他/课程/Spring/fitness/logs"/>
+        <property name="LOG_ROOT" value="D:/programming/web/spring/fitness/logs"/>
         <property name="FILE_NAME" value="log"/>
     </Properties>
 
@@ -35,20 +35,11 @@
 
     <Loggers>
         <!-- additivity=false避免延展到父层logger，输出两次-->
-        <logger name="com.hzh.springtest4" level="trace" additivity="false">
+        <logger name="com.hzh.fitness" level="trace" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="running-log"/>
         </logger>
         <logger name="org.springframework.core" level="debug" additivity="false">
-            <AppenderRef ref="ConsoleDefault"/>
-        </logger>
-        <logger name="org.springframework.web" level="debug" additivity="false">
-            <AppenderRef ref="ConsoleDefault"/>
-        </logger>
-        <logger name="org.aspectj" level="trace" additivity="false">
-            <AppenderRef ref="ConsoleDefault"/>
-        </logger>
-        <logger name="org.springframework.aop" level="trace" additivity="false">
             <AppenderRef ref="ConsoleDefault"/>
         </logger>
         <Root level="error">
