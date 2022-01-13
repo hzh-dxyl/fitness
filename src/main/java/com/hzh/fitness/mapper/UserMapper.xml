@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzh.fitness.mapper.UserMapper">
+
+    <resultMap id="UserMap" type="User" autoMapping="true">
+        <id property="id" column="id"/>
+        <result property="pwdHex" column="pwd_hex"/>
+        <result property="imgHex" column="img_hex"/>
+    </resultMap>
+
+    <insert id="insertUser" parameterType="User" keyProperty="id">
+        INSERT INTO users(phone, nickname, img, gender, birth, intro, img_hex, pwd_hex)
+        VALUES (#{phone,jdbcType=CHAR}, #{nickname,jdbcType=VARCHAR}, #{img,jdbcType=VARCHAR},
+                #{gender,jdbcType=CHAR}, #{birth,jdbcType=CHAR}, #{intro,jdbcType=VARCHAR},
+                #{imgHex,jdbcType=CHAR}, #{pwdHex,jdbcType=CHAR})
+    </insert>
+
+    <select id="selectUserByPhone" parameterType="String" resultMap="UserMap">
+        SELECT *
+        FROM users
+        WHERE phone = #{phone,jdbcType=CHAR}
+    </select>
+
+    <select id="selectUserById" parameterType="int" resultMap="UserMap">
+        SELECT *
+        FROM users
+        WHERE id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectHex" parameterType="String" resultType="String">
+        SELECT img_hex
+        FROM users
+        WHERE img_hex = #{imgHex,jdbcType=CHAR}
+        LIMIT 1
+    </select>
+
+    <delete id="deleteUserById" parameterType="int">
+        DELETE
+        FROM users
+        WHERE id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteUserByPhone" parameterType="String">
+        DELETE
+        FROM users
+        WHERE phone = #{phone,jdbcType=CHAR}
+    </delete>
+
+    <update id="updateUser" parameterType="User">
+        UPDATE users
+        <set>
+            <choose>
+                <when test="id!=0">
+                    id=#{id,jdbcType=INTEGER},
+                </when>
+                <when test="phone!=null">
+                    phone=#{phone,jdbcType=CHAR},
+                </when>
+            </choose>
+            <if test="nickname!=null">
+                nickname=#{nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="img!=null">
+                img=#{img,jdbcType=VARCHAR},
+            </if>
+            <if test="gender!=null">
+                gender=#{gender,jdbcType=CHAR},
+            </if>
+            <if test="birth!=null">
+                birth=#{birth,jdbcType=CHAR},
+            </if>
+            <if test="intro!=null">
+                intro=#{intro,jdbcType=VARCHAR},
+            </if>
+            <if test="imgHex!=null">
+                img_hex=#{imgHex,jdbcType=CHAR},
+            </if>
+            <if test="pwdHex!=null">
+                pwd_hex=#{pwdHex,jdbcType=CHAR},
+            </if>
+        </set>
+        <where>
+            <choose>
+                <when test="id!=0">
+                    id=#{id,jdbcType=INTEGER}
+                </when>
+                <when test="phone!=null">
+                    phone=#{phone,jdbcType=CHAR}
+                </when>
+            </choose>
+        </where>
+    </update>
+
+    <select id="selectAllUsers" resultMap="UserMap">
+        SELECT *
+        FROM users
+    </select>
+
+</mapper>
