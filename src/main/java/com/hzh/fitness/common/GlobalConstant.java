@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class GlobalConstant {
 
-    public static String PYTHON_PORT;
+    public static int PYTHON_PORT;
     public static String PYTHON_PATH;
     public static String PROJECT_ROOT;
     public static String IMAGE_ROOT;
@@ -38,17 +38,17 @@ public class GlobalConstant {
     }
 
     @Value("${pythonPort}")
-    public void setPythonPort(String pythonPort) {
+    public void setPythonPort(int pythonPort) {
         PYTHON_PORT = pythonPort;
     }
 
     @Value("${projectHost}")
-    public static void setProjectHost(String projectHost) {
+    public void setProjectHost(String projectHost) {
         PROJECT_HOST = projectHost;
     }
 
     @Value("${pythonHost}")
-    public static void setPythonHost(String pythonHost) {
+    public void setPythonHost(String pythonHost) {
         PYTHON_HOST = pythonHost;
     }
 }

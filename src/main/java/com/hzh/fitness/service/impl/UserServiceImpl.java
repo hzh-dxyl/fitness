@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
         int result;
         if (imgData == null) {
             int r = new Random().nextInt(4);
-            user.setImg("head/default" + r + "png");
+            user.setImg("head/default" + r + ".png");
             user.setImgHex(GlobalConstant.DEFAULT_HEAD_HEX[r]);
         } else {
             String hex = FileUtils.sha1String(imgData);
