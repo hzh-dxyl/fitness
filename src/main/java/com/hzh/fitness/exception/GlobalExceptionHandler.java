@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(GlobalException.class)
-    public MyResponse<JSONObject> globalExceptionHandler(GlobalException e){
+    public MyResponse<JSONObject> globalExceptionHandler(GlobalException e) {
         return MyResponse.createResponseByError(e.getMessage());
     }
 
