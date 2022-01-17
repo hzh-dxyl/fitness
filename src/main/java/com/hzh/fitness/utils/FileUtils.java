@@ -8,24 +8,16 @@ import java.security.MessageDigest;
  * @author hzh
  */
 public class FileUtils {
-    public static byte[] fileToBytes(String filePath) {
+    public static byte[] fileToBytes(String filePath) throws IOException {
         byte[] buffer = null;
-        try {
-            File file = new File(filePath);
-            buffer = getBytes(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        File file = new File(filePath);
+        buffer = getBytes(file);
         return buffer;
     }
 
-    public static byte[] fileToBytes(File file) {
+    public static byte[] fileToBytes(File file) throws IOException {
         byte[] buffer = null;
-        try {
-            buffer = getBytes(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        buffer = getBytes(file);
         return buffer;
     }
 
