@@ -37,11 +37,12 @@ public enum ImageType {
         }
     }
 
-    public static ImageType getEnum(String type) {
-        if (type == null) {
+    public static ImageType getEnum(String img) {
+        if (img == null) {
             return null;
         }
-        return map.get(type.toLowerCase());
+        String[] s = img.split("\\.");
+        return map.get(s[1].toLowerCase());
     }
 
     public String getExt() {
