@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public MyResponse<JSONObject> commonExceptionHandler(Exception e) {
+        e.printStackTrace();
         return MyResponse.createResponseByError("server error");
     }
 
