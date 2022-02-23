@@ -22,4 +22,6 @@ public interface UserMapper {
     int updateUser(User user);
 
     User[] selectAllUsers();
+
+    int selectImgCount(String hex);
 }

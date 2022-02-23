@@ -96,4 +96,8 @@
         FROM users
     </select>
 
+    <select id="selectImgCount" resultType="int" parameterType="String">
+        SELECT COUNT(*) FROM users WHERE img_hex=#{hex,jdbcType=CHAR}
+    </select>
+
 </mapper>

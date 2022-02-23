@@ -3,7 +3,9 @@
 <mapper namespace="com.hzh.fitness.mapper.ArticleMapper">
 
 
-
+    <select id="selectImgCount" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM articleimgs WHERE hex=#{hex,jdbcType=CHAR}
+    </select>
 
 
 </mapper>
