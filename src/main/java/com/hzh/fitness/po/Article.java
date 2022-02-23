@@ -14,10 +14,9 @@ public class Article {
      * 图片列表
      */
     private String[] img;
-    private int shareCount;
+
     private int commentCount;
     private int likeCount;
-    private ShareItem[] shares;
     private Comment[] comments;
     private User[] likes;
     /**
