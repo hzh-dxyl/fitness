@@ -44,12 +44,38 @@ public class FileController {
         outputStream.close();
     }
 
+    @RequestMapping("/images/articleImg/{img}")
+    public void getArticleImg(@PathVariable String img, HttpServletResponse response) throws Exception {
+        if (!ImageType.isImageName(img)) {
+            throw new GlobalException("invalid image name");
+        }
+        ImageType type = ImageType.getEnum(img);
+        String path = GlobalConstant.IMAGE_ROOT + "/articleImg/" + img;
+        logger.info("图片路径: " + path);
+        String mime = String.format("%s;charset=utf-8", type.getMime());
+        response.setContentType(mime);
+        OutputStream outputStream = response.getOutputStream();
+        outputStream.write(FileUtils.fileToBytes(path));
+        outputStream.flush();
+        outputStream.close();
+    }
+
     @RequestMapping("/files/{filename}")
     public void getFile(@PathVariable String filename, HttpServletResponse response) throws Exception {
         String path = GlobalConstant.IMAGE_ROOT + "/" + filename;
         logger.info("文件路径: " + path);
         File file = new File(path);
         response.setHeader("Content-Disposition", "attachment;filename*=UTF-8''" + URLEncoder.encode(filename, "utf-8"));
+        OutputStream out = response.getOutputStream();
+        out.write(FileUtils.fileToBytes(file));
+        out.flush();
+        out.close();
+    }
+
+    @RequestMapping("/videos/{filename}")
+    public void getVideo(@PathVariable String filename, HttpServletResponse response) throws Exception {
+        File file = new File("D:/programming/web/spring/fitness/videos/"+filename);
+        response.setContentType("video/mp4;charset=utf-8");
         OutputStream out = response.getOutputStream();
         out.write(FileUtils.fileToBytes(file));
         out.flush();

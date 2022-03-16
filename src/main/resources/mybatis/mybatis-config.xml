@@ -8,5 +8,7 @@
     </settings>
     <typeAliases>
         <typeAlias alias="User" type="com.hzh.fitness.po.User"/>
+        <typeAlias alias="Article" type="com.hzh.fitness.po.Article"/>
+        <typeAlias alias="Comment" type="com.hzh.fitness.po.Comment"/>
     </typeAliases>
 </configuration>
