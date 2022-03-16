@@ -7,6 +7,10 @@ public class Article {
     private int id;
     private int userId;
     /**
+     * 创建动态的时间戳
+     */
+    private String createTime;
+    /**
      * 动态正文
      */
     private String text;
@@ -18,10 +22,90 @@ public class Article {
     private int commentCount;
     private int likeCount;
     private Comment[] comments;
-    private User[] likes;
     /**
      * 是否为分享动态, 1是0否
      */
     private int isShare;
     private Article shareArticle;
+
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String[] getImg() {
+        return img;
+    }
+
+    public void setImg(String[] img) {
+        this.img = img;
+    }
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
+    }
+
+    public int getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public Comment[] getComments() {
+        return comments;
+    }
+
+    public void setComments(Comment[] comments) {
+        this.comments = comments;
+    }
+
+    public int getIsShare() {
+        return isShare;
+    }
+
+    public void setIsShare(int isShare) {
+        this.isShare = isShare;
+    }
+
+    public Article getShareArticle() {
+        return shareArticle;
+    }
+
+    public void setShareArticle(Article shareArticle) {
+        this.shareArticle = shareArticle;
+    }
 }

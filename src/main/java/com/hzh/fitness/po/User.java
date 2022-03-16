@@ -24,6 +24,42 @@ public class User {
      * 密码的sha1哈希码
      */
     private String pwdHex;
+    /**
+     * 关注该user的用户
+     */
+    private User[] followers;
+    /**
+     * 该user关注的用户
+     */
+    private User[] focus;
+    /**
+     * 该user的动态前10条
+     */
+    private Article[] articles;
+
+    public User[] getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(User[] followers) {
+        this.followers = followers;
+    }
+
+    public User[] getFocus() {
+        return focus;
+    }
+
+    public void setFocus(User[] focus) {
+        this.focus = focus;
+    }
+
+    public Article[] getArticles() {
+        return articles;
+    }
+
+    public void setArticles(Article[] articles) {
+        this.articles = articles;
+    }
 
     public User(String phone, String pwdHex) {
         this.phone = phone;

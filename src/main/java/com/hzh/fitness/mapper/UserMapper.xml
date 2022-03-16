@@ -6,6 +6,34 @@
         <id property="id" column="id"/>
         <result property="pwdHex" column="pwd_hex"/>
         <result property="imgHex" column="img_hex"/>
+        <association property="followers" column="id" select="selectFollowers"/>
+        <association property="focus" column="id" select="selectFocus"/>
+        <association property="articles" column="id" select="selectArticlesById"/>
+    </resultMap>
+
+    <resultMap id="CommentMap" type="Comment" autoMapping="true">
+        <id property="id" column="id"/>
+        <result property="articleId" column="article_id"/>
+        <result property="commentId" column="comment_id"/>
+        <result property="publisherId" column="publisher_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="content" column="content"/>
+        <result property="likeCount" column="likes"/>
+        <association property="publisherName" column="publisherId" select="selectUserNameById"/>
+        <association property="publisherImg" column="publisherId" select="selectUserImgById"/>
+    </resultMap>
+
+    <resultMap id="ArticleMap" type="Article" autoMapping="true">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="commentCount" column="comment_count"/>
+        <result property="likeCount" column="like_count"/>
+        <result property="text" column="content"/>
+        <result property="isShare" column="is_share"/>
+        <association property="shareArticle" column="share_article" select="selectShareArticle"/>
+        <association property="comments" column="id" select="selectCommentsByUserId"/>
+        <association property="img" column="id" select="selectArticleImgById"/>
     </resultMap>
 
     <insert id="insertUser" parameterType="User" keyProperty="id">
@@ -14,6 +42,64 @@
                 #{gender,jdbcType=CHAR}, #{birth,jdbcType=CHAR}, #{intro,jdbcType=VARCHAR},
                 #{imgHex,jdbcType=CHAR}, #{pwdHex,jdbcType=CHAR})
     </insert>
+
+    <select id="selectFollowers" parameterType="int" resultType="User">
+        select id,
+               phone,
+               nickname,
+               img,
+               gender,
+               birth,
+               intro,
+               img_hex
+        from users
+        where id in (select follower from follow where user_id = #{id,jdbcType=INTEGER})
+    </select>
+
+    <select id="selectFocus" parameterType="int" resultType="User">
+        select id,
+               phone,
+               nickname,
+               img,
+               gender,
+               birth,
+               intro,
+               img_hex
+        from users
+        where id in (select user_id from follow where follower = #{id,jdbcType=INTEGER})
+    </select>
+
+    <select id="selectArticlesById" parameterType="int" resultMap="ArticleMap">
+        select *
+        from articles
+        where user_id = #{id,jdbcType=INTEGER}
+        order by create_time desc
+        limit 0,10
+    </select>
+
+    <select id="selectShareArticle" parameterType="int" resultMap="ArticleMap">
+        select *
+        from articles
+        where id = #{share_article,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectCommentsByUserId" parameterType="int" resultMap="CommentMap">
+        select *
+        from comments
+        where id = #{id}
+    </select>
+
+    <select id="selectUserNameById" parameterType="int" resultType="String">
+        select nickname
+        from users
+        where id = #{publisherId}
+    </select>
+
+    <select id="selectUserImgById" parameterType="int" resultType="String">
+        select img
+        from users
+        where id = #{publisherId}
+    </select>
 
     <select id="selectUserByPhone" parameterType="String" resultMap="UserMap">
         SELECT *
@@ -25,6 +111,12 @@
         SELECT *
         FROM users
         WHERE id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectArticleImgById" parameterType="int" resultType="String">
+        select img_name
+        from articleimgs
+        where article_id = #{id}
     </select>
 
     <select id="selectHex" parameterType="String" resultType="String">
@@ -78,6 +170,9 @@
             <if test="pwdHex!=null">
                 pwd_hex=#{pwdHex,jdbcType=CHAR},
             </if>
+            <if test="phone!=null">
+                phone=#{phone,jdbcType=CHAR},
+            </if>
         </set>
         <where>
             <choose>
@@ -97,7 +192,9 @@
     </select>
 
     <select id="selectImgCount" resultType="int" parameterType="String">
-        SELECT COUNT(*) FROM users WHERE img_hex=#{hex,jdbcType=CHAR}
+        SELECT COUNT(*)
+        FROM users
+        WHERE img_hex = #{hex,jdbcType=CHAR}
     </select>
 
 </mapper>
