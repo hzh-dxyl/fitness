@@ -28,6 +28,25 @@ public class Article {
     private int isShare;
     private Article shareArticle;
 
+    private Integer shareArticleId;
+
+    private byte[][] imgData;
+
+    public Integer getShareArticleId() {
+        return shareArticleId;
+    }
+
+    public void setShareArticleId(Integer shareArticleId) {
+        this.shareArticleId = shareArticleId;
+    }
+
+    public byte[][] getImgData() {
+        return imgData;
+    }
+
+    public void setImgData(byte[][] imgData) {
+        this.imgData = imgData;
+    }
 
     public String getCreateTime() {
         return createTime;

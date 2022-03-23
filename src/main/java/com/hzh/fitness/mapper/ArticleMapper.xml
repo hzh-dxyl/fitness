@@ -2,10 +2,130 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hzh.fitness.mapper.ArticleMapper">
 
+    <resultMap id="CommentMap" type="Comment" autoMapping="true">
+        <id property="id" column="id"/>
+        <result property="articleId" column="article_id"/>
+        <result property="commentId" column="comment_id"/>
+        <result property="publisherId" column="publisher_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="content" column="content"/>
+        <result property="likeCount" column="likes"/>
+        <association property="publisherName" column="publisherId" select="selectUserNameById"/>
+        <association property="publisherImg" column="publisherId" select="selectUserImgById"/>
+    </resultMap>
+
+    <resultMap id="ArticleMap" type="Article" autoMapping="true">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="commentCount" column="comment_count"/>
+        <result property="likeCount" column="like_count"/>
+        <result property="text" column="content"/>
+        <result property="isShare" column="is_share"/>
+        <association property="shareArticle" column="share_article" select="selectShareArticle"/>
+        <association property="comments" column="id" select="selectCommentsByUserId"/>
+        <association property="img" column="id" select="selectArticleImgById"/>
+    </resultMap>
 
     <select id="selectImgCount" parameterType="String" resultType="int">
-        SELECT COUNT(*) FROM articleimgs WHERE hex=#{hex,jdbcType=CHAR}
+        SELECT COUNT(*)
+        FROM articleimgs
+        WHERE hex = #{hex,jdbcType=CHAR}
     </select>
 
+    <select id="selectArticleById" parameterType="int" resultMap="ArticleMap">
+        SELECT *
+        FROM articles
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectShareArticle" parameterType="int" resultMap="ArticleMap">
+        select *
+        from articles
+        where id = #{share_article,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectCommentsByUserId" parameterType="int" resultMap="CommentMap">
+        select *
+        from comments
+        where id = #{id}
+    </select>
+
+    <select id="selectUserNameById" parameterType="int" resultType="String">
+        select nickname
+        from users
+        where id = #{publisherId}
+    </select>
+
+    <select id="selectUserImgById" parameterType="int" resultType="String">
+        select img
+        from users
+        where id = #{publisherId}
+    </select>
+
+    <select id="selectArticleImgById" parameterType="int" resultType="String">
+        select img_name
+        from articleimgs
+        where article_id = #{id}
+    </select>
+
+    <insert id="insertArticle" parameterType="Article" keyProperty="id">
+        insert into articles(user_id, content, comment_count, like_count, is_share, share_article, create_time)
+        values (#{userId,jdbcType=INTEGER}, #{text,jdbcType=VARCHAR}, 0, 0, #{isShare,jdbcType=INTEGER},
+                #{shareArticleId,jdbcType=INTEGER}, now())
+    </insert>
+
+    <insert id="insertArticleImg" parameterType="String">
+        insert into articleimgs(img_name, hex, article_id) values
+        <foreach collection="array" separator="," item="item">
+            (#{item.imgName},#{item.hex},#{articleId})
+        </foreach>
+    </insert>
+
+    <select id="selectImgHex" parameterType="String" resultType="String">
+        SELECT hex
+        FROM articleimgs
+        WHERE hex = #{imgHex,jdbcType=CHAR}
+        LIMIT 1
+    </select>
+
+    <select id="selectFollowArticles" parameterType="int" resultMap="ArticleMap">
+        select *
+        from articles
+        where id in (select user_id from follow where follower = #{id,jdbcType=INTEGER})
+        order by create_time desc
+        limit ${(page-1)*perPage},${perPage}
+    </select>
+
+    <select id="selectPersonalArticles" resultMap="ArticleMap">
+        select *
+        from articles
+        where id = #{id}
+        order by create_time desc
+        limit ${(page-1)*perPage},${perPage}
+    </select>
+
+    <select id="selectNewestArticles" resultMap="ArticleMap">
+        select *
+        from articles
+        order by create_time desc
+        limit ${(page-1)*perPage},${perPage}
+    </select>
+
+    <select id="selectHotArticles" resultMap="ArticleMap">
+        select *
+        from articles
+        order by (like_count + comment_count * 3) + create_time / 10000 desc
+        limit ${(page-1)*perPage},${perPage}
+    </select>
+
+    <select id="selectTotalPages" resultType="int">
+        select (count(id) + #{perPage} - 1) / #{perPage}
+        from articles
+    </select>
+
+    <update id="updateLikeCountToArticle" parameterType="int">
+        update articles
+    </update>
 
 </mapper>

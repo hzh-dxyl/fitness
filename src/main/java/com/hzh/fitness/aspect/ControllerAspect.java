@@ -55,7 +55,9 @@ public class ControllerAspect {
         logger.info("返回参数: " + JSON.toJSONString(response));
     }
 
-    @Before("execution(* com.hzh.fitness.controller.*.modify*(..))")
+    @Before("execution(* com.hzh.fitness.controller.*.modify*(..))" +
+            "||execution(* com.hzh.fitness.controller.ArticleController.createArticle(..))" +
+            "||execution(* com.hzh.fitness.controller.ArticleController.getArticleList(..))")
     public void authentication(JoinPoint joinPoint) throws Throwable {
         ServletRequestAttributes sa = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = sa.getRequest();
