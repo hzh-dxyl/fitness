@@ -21,7 +21,7 @@ public interface ArticleService {
 
     Article[] selectHotArticles(int page, int perPage) throws Exception;
 
-    int likeArticle(int userId, int articleId) throws Exception;
+    void likeArticle(int userId, int articleId) throws Exception;
 
-    int likeComment(int userId, int commentId) throws Exception;
+    void likeComment(int userId, int commentId) throws Exception;
 }

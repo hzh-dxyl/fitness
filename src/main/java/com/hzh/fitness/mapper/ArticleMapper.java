@@ -40,4 +40,8 @@ public interface ArticleMapper {
     int selectArticleLikeLog(@Param("userId") int userId, @Param("articleId") int articleId);
 
     int selectCommentLikeLog(@Param("userId") int userId, @Param("commentId") int commentId);
+
+    int selectArticleId(int id);
+
+    int selectCommentId(int id);
 }

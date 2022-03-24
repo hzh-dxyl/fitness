@@ -96,7 +96,7 @@
         from articles
         where id in (select user_id from follow where follower = #{id,jdbcType=INTEGER})
         order by create_time desc
-        limit ${(page-1)*perPage,jdbcType=INTEGER},${perPage,jdbcType=INTEGER}
+        limit ${(page-1)*perPage},${perPage}
     </select>
 
     <select id="selectPersonalArticles" resultMap="ArticleMap">
@@ -104,21 +104,21 @@
         from articles
         where id = #{id}
         order by create_time desc
-        limit ${(page-1)*perPage,jdbcType=INTEGER},${perPage,jdbcType=INTEGER}
+        limit ${(page-1)*perPage},${perPage}
     </select>
 
     <select id="selectNewestArticles" resultMap="ArticleMap">
         select *
         from articles
         order by create_time desc
-        limit ${(page-1)*perPage,jdbcType=INTEGER},${perPage,jdbcType=INTEGER}
+        limit ${(page-1)*perPage},${perPage}
     </select>
 
     <select id="selectHotArticles" resultMap="ArticleMap">
         select *
         from articles
         order by (like_count + comment_count * 3) + create_time / 10000 desc
-        limit ${(page-1)*perPage,jdbcType=INTEGER},${perPage,jdbcType=INTEGER}
+        limit ${(page-1)*perPage},${perPage}
     </select>
 
     <select id="selectTotalPages" resultType="int">
@@ -148,13 +148,13 @@
         values (#{userId,jdbcType=INTEGER}, #{commentId,jdbcType=INTEGER})
     </insert>
 
-    <select id="selectLikeIdForArticle" parameterType="int">
+    <select id="selectLikeIdForArticle" parameterType="int" resultType="int">
         select user_id
         from likes
         where article_id = #{id,jdbcType=INTEGER}
     </select>
 
-    <select id="selectLikeIdForComment" parameterType="int">
+    <select id="selectLikeIdForComment" parameterType="int" resultType="int">
         select user_id
         from likes
         where comment_id = #{id,jdbcType=INTEGER}
@@ -172,6 +172,18 @@
         from likes
         where user_id = #{userId,jdbcType=INTEGER}
           and comment_id = #{commentId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectArticleId" parameterType="int" resultType="int">
+        select count(id)
+        from articles
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectCommentId" parameterType="int" resultType="int">
+        select count(id)
+        from comments
+        where id = #{id,jdbcType=INTEGER}
     </select>
 
 </mapper>

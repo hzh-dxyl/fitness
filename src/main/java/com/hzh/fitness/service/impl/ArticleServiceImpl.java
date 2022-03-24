@@ -69,22 +69,30 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public int likeArticle(int userId, int articleId) {
+    public void likeArticle(int userId, int articleId) throws Exception {
         int c = articleMapper.selectArticleLikeLog(userId, articleId);
+        int c2 = articleMapper.selectArticleId(articleId);
         if (c == 1) {
             throw new GlobalException("已经点赞过了");
         }
+        if (c2 == 0) {
+            throw new GlobalException("不存在该动态");
+        }
+        articleMapper.updateLikeCountToArticle(articleId);
         articleMapper.insertLikeArticle(userId, articleId);
-        return articleMapper.updateLikeCountToArticle(articleId);
     }
 
     @Override
-    public int likeComment(int userId, int commentId) {
+    public void likeComment(int userId, int commentId) throws Exception {
         int c = articleMapper.selectCommentLikeLog(userId, commentId);
+        int c2 = articleMapper.selectCommentId(commentId);
         if (c == 1) {
             throw new GlobalException("已经点赞过了");
         }
+        if (c2 == 0) {
+            throw new GlobalException("不存在该评论");
+        }
         articleMapper.insertLikeComment(userId, commentId);
-        return articleMapper.updateLikeCountToComment(commentId);
+        articleMapper.updateLikeCountToComment(commentId);
     }
 }

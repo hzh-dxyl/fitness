@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.hzh.fitness.common.MyResponse;
 import com.hzh.fitness.exception.GlobalException;
 import com.hzh.fitness.po.Article;
+import com.hzh.fitness.po.Comment;
 import com.hzh.fitness.service.ArticleService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -24,7 +25,11 @@ public class ArticleController {
 
     @GetMapping("/{id}")
     public MyResponse<Article> getArticle(@PathVariable int id) throws Exception {
-        return MyResponse.createResponseBySuccess("success", articleService.searchArticle(id));
+        Article article = articleService.searchArticle(id);
+        if (article == null) {
+            return MyResponse.createResponseByError("没有该动态");
+        }
+        return MyResponse.createResponseBySuccess("success", article);
     }
 
     @PostMapping("")
@@ -74,20 +79,19 @@ public class ArticleController {
 
     @PatchMapping("/{id}/like/{userId}")
     public MyResponse<JSONObject> likeArticleWithToken(@PathVariable int id, @PathVariable int userId) throws Exception {
-        int i = articleService.likeArticle(userId, id);
-        if (i == 0) {
-            throw new GlobalException("不存在该动态");
-        }
+        articleService.likeArticle(userId, id);
         return MyResponse.createResponseBySuccess("success");
     }
 
     @PatchMapping("/comments/{id}/like/{userId}")
     public MyResponse<JSONObject> likeCommentWithToken(@PathVariable int id, @PathVariable int userId) throws Exception {
-        int i = articleService.likeComment(userId, id);
-        if (i == 0) {
-            throw new GlobalException("不存在该评论");
-        }
+        articleService.likeComment(userId, id);
         return MyResponse.createResponseBySuccess("success");
+    }
+
+    @PostMapping("/{id}/comments")
+    public MyResponse<Comment> createCommentWithToken(@PathVariable int id) throws Exception {
+        return MyResponse.createResponseBySuccess("");
     }
 
 }
