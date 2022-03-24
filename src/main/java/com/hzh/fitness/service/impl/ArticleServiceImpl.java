@@ -5,9 +5,9 @@ import com.hzh.fitness.exception.GlobalException;
 import com.hzh.fitness.mapper.ArticleMapper;
 import com.hzh.fitness.po.Article;
 import com.hzh.fitness.po.ArticleImg;
+import com.hzh.fitness.po.Comment;
 import com.hzh.fitness.service.ArticleService;
 import com.hzh.fitness.utils.FileUtils;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -94,5 +94,18 @@ public class ArticleServiceImpl implements ArticleService {
         }
         articleMapper.insertLikeComment(userId, commentId);
         articleMapper.updateLikeCountToComment(commentId);
+    }
+
+    @Override
+    public Comment createComment(Comment comment) throws Exception {
+        if (comment.getCommentId() != null && articleMapper.checkArticleById(comment.getCommentId()) == 0) {
+            throw new GlobalException("不存在该评论");
+        }
+        if (articleMapper.checkArticleById(comment.getArticleId()) == 0) {
+            throw new GlobalException("不存在该动态");
+        }
+        articleMapper.insertComment(comment);
+        articleMapper.updateCommentCount(comment.getArticleId());
+        return articleMapper.selectCommentById(comment.getId());
     }
 }

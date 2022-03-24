@@ -12,7 +12,7 @@ public class Comment {
     /**
      * 楼中楼所属的评论，不是楼中楼则为null
      */
-    private int commentId;
+    private Integer commentId;
     /**
      * 评论者的user_id
      */
@@ -58,11 +58,11 @@ public class Comment {
         this.articleId = articleId;
     }
 
-    public int getCommentId() {
+    public Integer getCommentId() {
         return commentId;
     }
 
-    public void setCommentId(int commentId) {
+    public void setCommentId(Integer commentId) {
         this.commentId = commentId;
     }
 

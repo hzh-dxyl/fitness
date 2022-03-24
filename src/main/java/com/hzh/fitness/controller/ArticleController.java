@@ -89,9 +89,10 @@ public class ArticleController {
         return MyResponse.createResponseBySuccess("success");
     }
 
-    @PostMapping("/{id}/comments")
-    public MyResponse<Comment> createCommentWithToken(@PathVariable int id) throws Exception {
-        return MyResponse.createResponseBySuccess("");
+    @PostMapping("/comments")
+    public MyResponse<Comment> createCommentWithToken(@RequestBody Comment comment) throws Exception {
+        comment = articleService.createComment(comment);
+        return MyResponse.createResponseBySuccess("success", comment);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.hzh.fitness.service;
 
 import com.hzh.fitness.po.Article;
+import com.hzh.fitness.po.Comment;
 
 /**
  * @author hzh
@@ -24,4 +25,6 @@ public interface ArticleService {
     void likeArticle(int userId, int articleId) throws Exception;
 
     void likeComment(int userId, int commentId) throws Exception;
+
+    Comment createComment(Comment comment) throws Exception;
 }

@@ -25,7 +25,7 @@
         <result property="isShare" column="is_share"/>
         <association property="likeId" column="id" select="selectLikeIdForArticle"/>
         <association property="shareArticle" column="share_article" select="selectShareArticle"/>
-        <association property="comments" column="id" select="selectCommentsByUserId"/>
+        <association property="comments" column="id" select="selectCommentsByArticleId"/>
         <association property="img" column="id" select="selectArticleImgById"/>
     </resultMap>
 
@@ -47,10 +47,10 @@
         where id = #{share_article,jdbcType=INTEGER}
     </select>
 
-    <select id="selectCommentsByUserId" parameterType="int" resultMap="CommentMap">
+    <select id="selectCommentsByArticleId" parameterType="int" resultMap="CommentMap">
         select *
         from comments
-        where id = #{id}
+        where article_id = #{id}
     </select>
 
     <select id="selectUserNameById" parameterType="int" resultType="String">
@@ -181,6 +181,36 @@
     </select>
 
     <select id="selectCommentId" parameterType="int" resultType="int">
+        select count(id)
+        from comments
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insertComment" parameterType="Comment" keyProperty="id">
+        insert into comments(article_id, comment_id, create_time, content, publisher_id, likes)
+        values (#{articleId,jdbcType=INTEGER}, #{commentId,jdbcType=INTEGER}, now(), #{content,jdbcType=INTEGER},
+                #{publisherId,jdbcType=INTEGER}, 0)
+    </insert>
+
+    <update id="updateCommentCount" parameterType="int">
+        update articles
+        set comment_count=comment_count + 1
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectCommentById" parameterType="int" resultMap="CommentMap">
+        select *
+        from comments
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="checkArticleById" resultType="int">
+        select count(id)
+        from articles
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="checkCommentById" resultType="int">
         select count(id)
         from comments
         where id = #{id,jdbcType=INTEGER}

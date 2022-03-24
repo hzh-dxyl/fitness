@@ -2,6 +2,7 @@ package com.hzh.fitness.mapper;
 
 import com.hzh.fitness.po.Article;
 import com.hzh.fitness.po.ArticleImg;
+import com.hzh.fitness.po.Comment;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -44,4 +45,14 @@ public interface ArticleMapper {
     int selectArticleId(int id);
 
     int selectCommentId(int id);
+
+    int insertComment(Comment comment);
+
+    int updateCommentCount(int id);
+
+    Comment selectCommentById(int id);
+
+    int checkArticleById(int id);
+
+    int checkCommentById(int id);
 }
