@@ -28,4 +28,8 @@ public interface ArticleMapper {
     Article[] selectHotArticles(@Param("page") int page, @Param("perPage") int perPage);
 
     int selectTotalPages(int perPage);
+
+    int updateLikeCountToArticle(int id);
+
+    int updateLikeCountToComment(int id);
 }
