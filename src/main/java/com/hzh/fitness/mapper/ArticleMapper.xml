@@ -10,6 +10,7 @@
         <result property="createTime" column="create_time"/>
         <result property="content" column="content"/>
         <result property="likeCount" column="likes"/>
+        <association property="likeId" column="id" select="selectLikeIdForComment"/>
         <association property="publisherName" column="publisherId" select="selectUserNameById"/>
         <association property="publisherImg" column="publisherId" select="selectUserImgById"/>
     </resultMap>
@@ -22,6 +23,7 @@
         <result property="likeCount" column="like_count"/>
         <result property="text" column="content"/>
         <result property="isShare" column="is_share"/>
+        <association property="likeId" column="id" select="selectLikeIdForArticle"/>
         <association property="shareArticle" column="share_article" select="selectShareArticle"/>
         <association property="comments" column="id" select="selectCommentsByUserId"/>
         <association property="img" column="id" select="selectArticleImgById"/>
@@ -135,5 +137,41 @@
         set likes = likes + 1
         where id = #{id,jdbcType=INTEGER}
     </update>
+
+    <insert id="insertLikeArticle" parameterType="int">
+        insert into likes(user_id, article_id)
+        values (#{userId,jdbcType=INTEGER}, #{articleId,jdbcType=INTEGER})
+    </insert>
+
+    <insert id="insertLikeComment" parameterType="int">
+        insert into likes(user_id, comment_id)
+        values (#{userId,jdbcType=INTEGER}, #{commentId,jdbcType=INTEGER})
+    </insert>
+
+    <select id="selectLikeIdForArticle" parameterType="int">
+        select user_id
+        from likes
+        where article_id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectLikeIdForComment" parameterType="int">
+        select user_id
+        from likes
+        where comment_id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectArticleLikeLog" parameterType="int" resultType="int">
+        select count(id)
+        from likes
+        where user_id = #{userId,jdbcType=INTEGER}
+          and article_id = #{articleId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectCommentLikeLog" parameterType="int" resultType="int">
+        select count(id)
+        from likes
+        where user_id = #{userId,jdbcType=INTEGER}
+          and comment_id = #{commentId,jdbcType=INTEGER}
+    </select>
 
 </mapper>

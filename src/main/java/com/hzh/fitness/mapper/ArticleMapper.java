@@ -32,4 +32,12 @@ public interface ArticleMapper {
     int updateLikeCountToArticle(int id);
 
     int updateLikeCountToComment(int id);
+
+    int insertLikeArticle(@Param("userId") int userId, @Param("articleId") int articleId);
+
+    int insertLikeComment(@Param("userId") int userId, @Param("commentId") int commentId);
+
+    int selectArticleLikeLog(@Param("userId") int userId, @Param("articleId") int articleId);
+
+    int selectCommentLikeLog(@Param("userId") int userId, @Param("commentId") int commentId);
 }

@@ -72,18 +72,18 @@ public class ArticleController {
         return MyResponse.createResponseBySuccess("success", object);
     }
 
-    @PatchMapping("/{id}/like")
-    public MyResponse<JSONObject> likeArticleWithToken(@PathVariable int id) throws Exception {
-        int i = articleService.likeArticle(id);
+    @PatchMapping("/{id}/like/{userId}")
+    public MyResponse<JSONObject> likeArticleWithToken(@PathVariable int id, @PathVariable int userId) throws Exception {
+        int i = articleService.likeArticle(userId, id);
         if (i == 0) {
             throw new GlobalException("不存在该动态");
         }
         return MyResponse.createResponseBySuccess("success");
     }
 
-    @PatchMapping("/comments/{id}/like")
-    public MyResponse<JSONObject> likeCommentWithToken(@PathVariable int id) throws Exception {
-        int i = articleService.likeComment(id);
+    @PatchMapping("/comments/{id}/like/{userId}")
+    public MyResponse<JSONObject> likeCommentWithToken(@PathVariable int id, @PathVariable int userId) throws Exception {
+        int i = articleService.likeComment(userId, id);
         if (i == 0) {
             throw new GlobalException("不存在该评论");
         }

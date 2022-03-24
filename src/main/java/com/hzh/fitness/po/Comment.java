@@ -32,6 +32,16 @@ public class Comment {
     private String content;
     private int likeCount;
 
+    private int[] likeId;
+
+    public int[] getLikeId() {
+        return likeId;
+    }
+
+    public void setLikeId(int[] likeId) {
+        this.likeId = likeId;
+    }
+
     public int getId() {
         return id;
     }

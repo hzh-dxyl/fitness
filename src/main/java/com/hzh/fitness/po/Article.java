@@ -21,6 +21,10 @@ public class Article {
 
     private int commentCount;
     private int likeCount;
+    /**
+     * 点赞id数组
+     */
+    private int[] likeId;
     private Comment[] comments;
     /**
      * 是否为分享动态, 1是0否
@@ -31,6 +35,14 @@ public class Article {
     private Integer shareArticleId;
 
     private byte[][] imgData;
+
+    public int[] getLikeId() {
+        return likeId;
+    }
+
+    public void setLikeId(int[] likeId) {
+        this.likeId = likeId;
+    }
 
     public Integer getShareArticleId() {
         return shareArticleId;

@@ -1,6 +1,7 @@
 package com.hzh.fitness.service.impl;
 
 import com.hzh.fitness.common.GlobalConstant;
+import com.hzh.fitness.exception.GlobalException;
 import com.hzh.fitness.mapper.ArticleMapper;
 import com.hzh.fitness.po.Article;
 import com.hzh.fitness.po.ArticleImg;
@@ -68,12 +69,22 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public int likeArticle(int id) {
-        return articleMapper.updateLikeCountToArticle(id);
+    public int likeArticle(int userId, int articleId) {
+        int c = articleMapper.selectArticleLikeLog(userId, articleId);
+        if (c == 1) {
+            throw new GlobalException("已经点赞过了");
+        }
+        articleMapper.insertLikeArticle(userId, articleId);
+        return articleMapper.updateLikeCountToArticle(articleId);
     }
 
     @Override
-    public int likeComment(int id) {
-        return articleMapper.updateLikeCountToComment(id);
+    public int likeComment(int userId, int commentId) {
+        int c = articleMapper.selectCommentLikeLog(userId, commentId);
+        if (c == 1) {
+            throw new GlobalException("已经点赞过了");
+        }
+        articleMapper.insertLikeComment(userId, commentId);
+        return articleMapper.updateLikeCountToComment(commentId);
     }
 }
