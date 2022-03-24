@@ -67,4 +67,13 @@ public class ArticleServiceImpl implements ArticleService {
         return articleMapper.selectHotArticles(page, perPage);
     }
 
+    @Override
+    public int likeArticle(int id) {
+        return articleMapper.updateLikeCountToArticle(id);
+    }
+
+    @Override
+    public int likeComment(int id) {
+        return articleMapper.updateLikeCountToComment(id);
+    }
 }

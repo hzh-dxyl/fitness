@@ -197,4 +197,9 @@
         WHERE img_hex = #{hex,jdbcType=CHAR}
     </select>
 
+    <insert id="insertFollower" parameterType="int">
+        insert into follow(user_id, follower)
+        values (#{id,jdbcType=INTEGER}, #{follower,jdbcType=INTEGER})
+    </insert>
+
 </mapper>

@@ -74,7 +74,7 @@ public class FileController {
 
     @RequestMapping("/videos/{filename}")
     public void getVideo(@PathVariable String filename, HttpServletResponse response) throws Exception {
-        File file = new File("D:/programming/web/spring/fitness/videos/"+filename);
+        File file = new File(GlobalConstant.VIDEO_ROOT + "/" + filename);
         response.setContentType("video/mp4;charset=utf-8");
         OutputStream out = response.getOutputStream();
         out.write(FileUtils.fileToBytes(file));

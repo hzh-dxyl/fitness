@@ -94,7 +94,7 @@
         from articles
         where id in (select user_id from follow where follower = #{id,jdbcType=INTEGER})
         order by create_time desc
-        limit ${(page-1)*perPage},${perPage}
+        limit ${(page-1)*perPage,jdbcType=INTEGER},${perPage,jdbcType=INTEGER}
     </select>
 
     <select id="selectPersonalArticles" resultMap="ArticleMap">
@@ -102,30 +102,38 @@
         from articles
         where id = #{id}
         order by create_time desc
-        limit ${(page-1)*perPage},${perPage}
+        limit ${(page-1)*perPage,jdbcType=INTEGER},${perPage,jdbcType=INTEGER}
     </select>
 
     <select id="selectNewestArticles" resultMap="ArticleMap">
         select *
         from articles
         order by create_time desc
-        limit ${(page-1)*perPage},${perPage}
+        limit ${(page-1)*perPage,jdbcType=INTEGER},${perPage,jdbcType=INTEGER}
     </select>
 
     <select id="selectHotArticles" resultMap="ArticleMap">
         select *
         from articles
         order by (like_count + comment_count * 3) + create_time / 10000 desc
-        limit ${(page-1)*perPage},${perPage}
+        limit ${(page-1)*perPage,jdbcType=INTEGER},${perPage,jdbcType=INTEGER}
     </select>
 
     <select id="selectTotalPages" resultType="int">
-        select (count(id) + #{perPage} - 1) / #{perPage}
+        select (count(id) + #{perPage,jdbcType=INTEGER} - 1) / #{perPage,jdbcType=INTEGER}
         from articles
     </select>
 
     <update id="updateLikeCountToArticle" parameterType="int">
         update articles
+        set like_count = like_count + 1
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateLikeCountToComment" parameterType="int">
+        update comments
+        set likes = likes + 1
+        where id = #{id,jdbcType=INTEGER}
     </update>
 
 </mapper>

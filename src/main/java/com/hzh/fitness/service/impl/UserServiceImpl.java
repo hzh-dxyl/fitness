@@ -92,4 +92,9 @@ public class UserServiceImpl implements UserService {
     public User[] getAllUsers() throws Exception {
         return userMapper.selectAllUsers();
     }
+
+    @Override
+    public int addFollower(int id, int follower) throws Exception {
+        return userMapper.insertFollower(id, follower);
+    }
 }

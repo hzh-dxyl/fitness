@@ -13,6 +13,7 @@ public class GlobalConstant {
     public static String PYTHON_PATH;
     public static String PROJECT_ROOT;
     public static String IMAGE_ROOT;
+    public static String VIDEO_ROOT;
     public static String PROJECT_HOST;
     public static String PYTHON_HOST;
     public static final String[] DEFAULT_HEAD_HEX = {
@@ -50,5 +51,10 @@ public class GlobalConstant {
     @Value("${pythonHost}")
     public void setPythonHost(String pythonHost) {
         PYTHON_HOST = pythonHost;
+    }
+
+    @Value("${videoRoot}")
+    public void setVideoRoot(String videoRoot) {
+        VIDEO_ROOT = videoRoot;
     }
 }

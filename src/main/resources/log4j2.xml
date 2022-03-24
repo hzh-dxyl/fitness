@@ -42,6 +42,9 @@
         <logger name="org.springframework.core" level="debug" additivity="false">
             <AppenderRef ref="ConsoleDefault"/>
         </logger>
+<!--        <logger name="org.springframework.beans" level="debug" additivity="false">-->
+<!--            <AppenderRef ref="ConsoleDefault"/>-->
+<!--        </logger>-->
         <Root level="error">
             <AppenderRef ref="ConsoleDefault"/>
         </Root>

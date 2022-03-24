@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.hzh.fitness.common.LoginInfo;
 import com.hzh.fitness.common.LoginList;
 import com.hzh.fitness.common.MyResponse;
+import com.hzh.fitness.exception.GlobalException;
 import com.hzh.fitness.po.User;
 import com.hzh.fitness.service.UserService;
 import com.hzh.fitness.utils.ImageType;
@@ -75,7 +76,7 @@ public class UserController {
      */
     @PutMapping("/{id}")
     @PatchMapping("/{id}")
-    public MyResponse<User> modifyUser(@PathVariable int id, @RequestBody JSONObject object) throws Exception {
+    public MyResponse<User> modifyUserWithToken(@PathVariable int id, @RequestBody JSONObject object) throws Exception {
         if (object == null) {
             return MyResponse.createResponseByError("empty requestBody");
         }
@@ -109,6 +110,16 @@ public class UserController {
         ret.setPwdHex(null);
         ret.setImgHex(null);
         return MyResponse.createResponseBySuccess("success", ret);
+    }
+
+    @PostMapping("/{id}/followers/{follower}")
+    public MyResponse<JSONObject> addFollowerWithToken(@PathVariable int id, @PathVariable int follower) throws Exception {
+        int i = userService.addFollower(id, follower);
+        if (i == 1) {
+            return MyResponse.createResponseBySuccess("success");
+        } else {
+            throw new GlobalException("failure");
+        }
     }
 
     /**

@@ -50,4 +50,6 @@ public interface UserService {
      * @throws Exception 抛出异常
      */
     User[] getAllUsers() throws Exception;
+
+    int addFollower(int id, int follower) throws Exception;
 }

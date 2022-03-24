@@ -28,7 +28,7 @@ public class ArticleController {
     }
 
     @PostMapping("")
-    public MyResponse<Article> createArticle(@RequestBody Article article) throws Exception {
+    public MyResponse<Article> createArticleWithToken(@RequestBody Article article) throws Exception {
         //需要的参数：userId,text,img[],imgData[],isShare,shareArticle
         if (article.getImgData() != null && article.getImg() == null) {
             throw new GlobalException("没有图片名信息！");
@@ -45,7 +45,7 @@ public class ArticleController {
 
     //要有分页
     @GetMapping("/{id}/{type}")
-    public MyResponse<JSONObject> getArticleList(@PathVariable int id, @PathVariable String type, int page, int perPage) throws Exception {
+    public MyResponse<JSONObject> getArticleListWithToken(@PathVariable int id, @PathVariable String type, int page, int perPage) throws Exception {
         JSONObject object = new JSONObject();
         Article[] articles;
         switch (type) {
@@ -70,6 +70,24 @@ public class ArticleController {
         object.put("perPage", perPage);
         object.put("type", type);
         return MyResponse.createResponseBySuccess("success", object);
+    }
+
+    @PatchMapping("/{id}/like")
+    public MyResponse<JSONObject> likeArticleWithToken(@PathVariable int id) throws Exception {
+        int i = articleService.likeArticle(id);
+        if (i == 0) {
+            throw new GlobalException("不存在该动态");
+        }
+        return MyResponse.createResponseBySuccess("success");
+    }
+
+    @PatchMapping("/comments/{id}/like")
+    public MyResponse<JSONObject> likeCommentWithToken(@PathVariable int id) throws Exception {
+        int i = articleService.likeComment(id);
+        if (i == 0) {
+            throw new GlobalException("不存在该评论");
+        }
+        return MyResponse.createResponseBySuccess("success");
     }
 
 }

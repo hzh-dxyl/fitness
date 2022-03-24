@@ -1,6 +1,7 @@
 package com.hzh.fitness.mapper;
 
 import com.hzh.fitness.po.User;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @author hzh
@@ -24,4 +25,6 @@ public interface UserMapper {
     User[] selectAllUsers();
 
     int selectImgCount(String hex);
+
+    int insertFollower(@Param("id") int id, @Param("follower") int follower);
 }

@@ -20,4 +20,8 @@ public interface ArticleService {
     Article[] selectNewestArticles(int page, int perPage) throws Exception;
 
     Article[] selectHotArticles(int page, int perPage) throws Exception;
+
+    int likeArticle(int id) throws Exception;
+
+    int likeComment(int id) throws Exception;
 }
