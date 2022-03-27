@@ -30,16 +30,17 @@ public class ArticleServiceImpl implements ArticleService {
         byte[][] imgData = article.getImgData();
         String[] imgs = article.getImg();
         articleMapper.insertArticle(article);
-        ArticleImg[] articleImgs = new ArticleImg[imgs.length];
-        for (int i = 0; i < imgs.length; i++) {
-            String hex = FileUtils.sha1String(imgData[i]);
-            String suffix = "." + imgs[i].split("\\.")[1];
-            if (articleMapper.selectImgHex(hex) == null)
-                FileUtils.bytesToFile(imgData[i], GlobalConstant.IMAGE_ROOT + "/articleImg/", hex + suffix);
-            articleImgs[i] = new ArticleImg(article.getId(), hex + suffix, FileUtils.sha1String(imgData[i]));
-        }
-        if (imgs.length > 0)
+        if (imgs != null) {
+            ArticleImg[] articleImgs = new ArticleImg[imgs.length];
+            for (int i = 0; i < imgs.length; i++) {
+                String hex = FileUtils.sha1String(imgData[i]);
+                String suffix = "." + imgs[i].split("\\.")[1];
+                if (articleMapper.selectImgHex(hex) == null)
+                    FileUtils.bytesToFile(imgData[i], GlobalConstant.IMAGE_ROOT + "/articleImg/", hex + suffix);
+                articleImgs[i] = new ArticleImg(article.getId(), hex + suffix, FileUtils.sha1String(imgData[i]));
+            }
             articleMapper.insertArticleImg(articleImgs);
+        }
         return articleMapper.selectArticleById(article.getId());
     }
 
