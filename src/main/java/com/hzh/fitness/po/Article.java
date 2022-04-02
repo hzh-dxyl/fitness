@@ -36,6 +36,26 @@ public class Article {
 
     private byte[][] imgData;
 
+    private String publisherName;
+
+    private String publisherImg;
+
+    public String getPublisherName() {
+        return publisherName;
+    }
+
+    public void setPublisherName(String publisherName) {
+        this.publisherName = publisherName;
+    }
+
+    public String getPublisherImg() {
+        return publisherImg;
+    }
+
+    public void setPublisherImg(String publisherImg) {
+        this.publisherImg = publisherImg;
+    }
+
     public int[] getLikeId() {
         return likeId;
     }

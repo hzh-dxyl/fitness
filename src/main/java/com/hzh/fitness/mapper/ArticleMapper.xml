@@ -27,6 +27,8 @@
         <association property="shareArticle" column="share_article" select="selectShareArticle"/>
         <association property="comments" column="id" select="selectCommentsByArticleId"/>
         <association property="img" column="id" select="selectArticleImgById"/>
+        <association property="publisherName" column="user_id" select="selectUserNameById"/>
+        <association property="publisherImg" column="user_id" select="selectUserImgById"/>
     </resultMap>
 
     <select id="selectImgCount" parameterType="String" resultType="int">
