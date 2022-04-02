@@ -122,6 +122,16 @@ public class UserController {
         }
     }
 
+    @DeleteMapping("/{id}/followers/{follower}")
+    public MyResponse<JSONObject> deleteFollowerWithToken(@PathVariable int id, @PathVariable int follower) throws Exception {
+        int i = userService.deleteFollower(id, follower);
+        if (i == 1) {
+            return MyResponse.createResponseBySuccess("success");
+        } else {
+            throw new GlobalException("failure");
+        }
+    }
+
     /**
      * 开发用，获取所有用户信息
      *

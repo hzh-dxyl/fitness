@@ -52,4 +52,6 @@ public interface UserService {
     User[] getAllUsers() throws Exception;
 
     int addFollower(int id, int follower) throws Exception;
+
+    int deleteFollower(int id, int follower) throws Exception;
 }

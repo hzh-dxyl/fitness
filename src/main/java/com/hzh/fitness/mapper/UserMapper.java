@@ -27,4 +27,6 @@ public interface UserMapper {
     int selectImgCount(String hex);
 
     int insertFollower(@Param("id") int id, @Param("follower") int follower);
+
+    int deleteFollower(@Param("id") int id, @Param("follower") int follower);
 }

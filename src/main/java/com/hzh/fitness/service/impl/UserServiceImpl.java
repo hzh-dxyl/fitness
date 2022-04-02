@@ -97,4 +97,9 @@ public class UserServiceImpl implements UserService {
     public int addFollower(int id, int follower) throws Exception {
         return userMapper.insertFollower(id, follower);
     }
+
+    @Override
+    public int deleteFollower(int id, int follower) throws Exception {
+        return userMapper.deleteFollower(id, follower);
+    }
 }

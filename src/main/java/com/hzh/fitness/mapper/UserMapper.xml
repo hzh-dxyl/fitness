@@ -153,4 +153,11 @@
         values (#{id,jdbcType=INTEGER}, #{follower,jdbcType=INTEGER})
     </insert>
 
+    <delete id="deleteFollower" parameterType="int">
+        delete
+        from follow
+        where user_id = #{id,jdbcType=INTEGER}
+          and follower = #{follower,jdbcType=INTEGER}
+    </delete>
+
 </mapper>
