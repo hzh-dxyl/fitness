@@ -130,13 +130,13 @@
 
     <update id="updateLikeCountToArticle" parameterType="int">
         update articles
-        set like_count = like_count + 1
+        set like_count = like_count + #{count,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
 
     <update id="updateLikeCountToComment" parameterType="int">
         update comments
-        set likes = likes + 1
+        set likes = likes + #{count,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
 
@@ -145,10 +145,24 @@
         values (#{userId,jdbcType=INTEGER}, #{articleId,jdbcType=INTEGER})
     </insert>
 
+    <delete id="deleteLikeArticle" parameterType="int">
+        delete
+        from likes
+        where user_id = #{userId,jdbcType=INTEGER}
+          and article_id = #{articleId,jdbcType=INTEGER}
+    </delete>
+
     <insert id="insertLikeComment" parameterType="int">
         insert into likes(user_id, comment_id)
         values (#{userId,jdbcType=INTEGER}, #{commentId,jdbcType=INTEGER})
     </insert>
+
+    <delete id="deleteLikeComment" parameterType="int">
+        delete
+        from likes
+        where user_id = #{userId,jdbcType=INTEGER}
+          and comment_id = #{commentId,jdbcType=INTEGER}
+    </delete>
 
     <select id="selectLikeIdForArticle" parameterType="int" resultType="int">
         select user_id

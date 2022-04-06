@@ -79,7 +79,7 @@ public class ArticleServiceImpl implements ArticleService {
         if (c2 == 0) {
             throw new GlobalException("不存在该动态");
         }
-        articleMapper.updateLikeCountToArticle(articleId);
+        articleMapper.updateLikeCountToArticle(articleId, 1);
         articleMapper.insertLikeArticle(userId, articleId);
     }
 
@@ -94,7 +94,35 @@ public class ArticleServiceImpl implements ArticleService {
             throw new GlobalException("不存在该评论");
         }
         articleMapper.insertLikeComment(userId, commentId);
-        articleMapper.updateLikeCountToComment(commentId);
+        articleMapper.updateLikeCountToComment(commentId, 1);
+    }
+
+    @Override
+    public void dislikeArticle(int userId, int articleId) throws Exception {
+        int c = articleMapper.selectArticleLikeLog(userId, articleId);
+        int c2 = articleMapper.selectArticleId(articleId);
+        if (c == 0) {
+            throw new GlobalException("还未点赞过");
+        }
+        if (c2 == 0) {
+            throw new GlobalException("不存在该动态");
+        }
+        articleMapper.updateLikeCountToArticle(articleId, -1);
+        articleMapper.deleteLikeArticle(userId, articleId);
+    }
+
+    @Override
+    public void dislikeComment(int userId, int commentId) throws Exception {
+        int c = articleMapper.selectCommentLikeLog(userId, commentId);
+        int c2 = articleMapper.selectCommentId(commentId);
+        if (c == 0) {
+            throw new GlobalException("还未点赞过");
+        }
+        if (c2 == 0) {
+            throw new GlobalException("不存在该评论");
+        }
+        articleMapper.deleteLikeComment(userId, commentId);
+        articleMapper.updateLikeCountToComment(commentId, -1);
     }
 
     @Override

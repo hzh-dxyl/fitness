@@ -26,5 +26,9 @@ public interface ArticleService {
 
     void likeComment(int userId, int commentId) throws Exception;
 
+    void dislikeArticle(int userId, int articleId) throws Exception;
+
+    void dislikeComment(int userId, int commentId) throws Exception;
+
     Comment createComment(Comment comment) throws Exception;
 }

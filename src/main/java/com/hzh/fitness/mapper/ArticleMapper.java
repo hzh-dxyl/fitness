@@ -30,13 +30,17 @@ public interface ArticleMapper {
 
     int selectTotalPages(int perPage);
 
-    int updateLikeCountToArticle(int id);
+    int updateLikeCountToArticle(@Param("id") int id, @Param("count") int count);
 
-    int updateLikeCountToComment(int id);
+    int updateLikeCountToComment(@Param("id") int id, @Param("count") int count);
 
     int insertLikeArticle(@Param("userId") int userId, @Param("articleId") int articleId);
 
     int insertLikeComment(@Param("userId") int userId, @Param("commentId") int commentId);
+
+    int deleteLikeArticle(@Param("userId") int userId, @Param("articleId") int articleId);
+
+    int deleteLikeComment(@Param("userId") int userId, @Param("commentId") int commentId);
 
     int selectArticleLikeLog(@Param("userId") int userId, @Param("articleId") int articleId);
 

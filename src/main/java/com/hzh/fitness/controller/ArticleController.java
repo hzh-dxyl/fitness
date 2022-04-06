@@ -89,6 +89,18 @@ public class ArticleController {
         return MyResponse.createResponseBySuccess("success");
     }
 
+    @PatchMapping("/{id}/dislike/{userId}")
+    public MyResponse<JSONObject> dislikeArticleWithToken(@PathVariable int id, @PathVariable int userId) throws Exception {
+        articleService.dislikeArticle(userId, id);
+        return MyResponse.createResponseBySuccess("success");
+    }
+
+    @PatchMapping("/comments/{id}/dislike/{userId}")
+    public MyResponse<JSONObject> dislikeCommentWithToken(@PathVariable int id, @PathVariable int userId) throws Exception {
+        articleService.dislikeComment(userId, id);
+        return MyResponse.createResponseBySuccess("success");
+    }
+
     @PostMapping("/comments")
     public MyResponse<Comment> createCommentWithToken(@RequestBody Comment comment) throws Exception {
         comment = articleService.createComment(comment);
