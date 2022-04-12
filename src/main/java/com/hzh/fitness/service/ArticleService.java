@@ -31,4 +31,6 @@ public interface ArticleService {
     void dislikeComment(int userId, int commentId) throws Exception;
 
     Comment createComment(Comment comment) throws Exception;
+
+    Comment[] getSubComment(int commentId) throws Exception;
 }

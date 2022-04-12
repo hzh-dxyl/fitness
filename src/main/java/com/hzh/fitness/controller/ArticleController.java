@@ -107,4 +107,14 @@ public class ArticleController {
         return MyResponse.createResponseBySuccess("success", comment);
     }
 
+    @GetMapping("/comments/{id}/subComment")
+    public MyResponse<JSONObject> getSubComment(@PathVariable int id) throws Exception {
+        JSONObject object = new JSONObject();
+        Comment[] comments = articleService.getSubComment(id);
+        object.put("subComments", comments);
+        object.put("length", comments.length);
+        object.put("id", id);
+        return MyResponse.createResponseBySuccess("success", object);
+    }
+
 }

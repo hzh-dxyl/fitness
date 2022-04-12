@@ -31,8 +31,17 @@ public class Comment {
     private String publisherImg;
     private String content;
     private int likeCount;
+    private int commentCount;
 
     private int[] likeId;
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
+    }
 
     public int[] getLikeId() {
         return likeId;

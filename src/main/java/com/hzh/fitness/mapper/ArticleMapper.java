@@ -59,4 +59,6 @@ public interface ArticleMapper {
     int checkArticleById(int id);
 
     int checkCommentById(int id);
+
+    Comment[] selectSubComment(int commentId);
 }

@@ -127,7 +127,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Comment createComment(Comment comment) throws Exception {
-        if (comment.getCommentId() != null && articleMapper.checkArticleById(comment.getCommentId()) == 0) {
+        if (comment.getCommentId() != null && articleMapper.checkCommentById(comment.getCommentId()) == 0) {
             throw new GlobalException("不存在该评论");
         }
         if (articleMapper.checkArticleById(comment.getArticleId()) == 0) {
@@ -136,5 +136,14 @@ public class ArticleServiceImpl implements ArticleService {
         articleMapper.insertComment(comment);
         articleMapper.updateCommentCount(comment.getArticleId());
         return articleMapper.selectCommentById(comment.getId());
+    }
+
+    @Override
+    public Comment[] getSubComment(int commentId) throws Exception {
+        int c2 = articleMapper.selectCommentId(commentId);
+        if (c2 == 0) {
+            throw new GlobalException("不存在该评论");
+        }
+        return articleMapper.selectSubComment(commentId);
     }
 }

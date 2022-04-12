@@ -11,8 +11,9 @@
         <result property="content" column="content"/>
         <result property="likeCount" column="likes"/>
         <association property="likeId" column="id" select="selectLikeIdForComment"/>
-        <association property="publisherName" column="publisherId" select="selectUserNameById"/>
-        <association property="publisherImg" column="publisherId" select="selectUserImgById"/>
+        <association property="publisherName" column="publisher_id" select="selectUserNameById"/>
+        <association property="publisherImg" column="publisher_id" select="selectUserImgById"/>
+        <association property="commentCount" column="id" select="selectSubCommentCount"/>
     </resultMap>
 
     <resultMap id="ArticleMap" type="Article" autoMapping="true">
@@ -52,25 +53,32 @@
     <select id="selectCommentsByArticleId" parameterType="int" resultMap="CommentMap">
         select *
         from comments
-        where article_id = #{id}
+        where comment_id IS NULL
+          and article_id = #{id}
+    </select>
+
+    <select id="selectSubCommentCount" parameterType="int" resultType="int">
+        select count(id)
+        from comments
+        where comment_id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectUserNameById" parameterType="int" resultType="String">
         select nickname
         from users
-        where id = #{publisherId}
+        where id = #{publisherId,jdbcType=INTEGER}
     </select>
 
     <select id="selectUserImgById" parameterType="int" resultType="String">
         select img
         from users
-        where id = #{publisherId}
+        where id = #{publisherId,jdbcType=INTEGER}
     </select>
 
     <select id="selectArticleImgById" parameterType="int" resultType="String">
         select img_name
         from articleimgs
-        where article_id = #{id}
+        where article_id = #{id,jdbcType=INTEGER}
     </select>
 
     <insert id="insertArticle" parameterType="Article" keyProperty="id">
@@ -230,6 +238,12 @@
         select count(id)
         from comments
         where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectSubComment" parameterType="int" resultMap="CommentMap">
+        select *
+        from comments
+        where comment_id = #{commentId,jdbcType=INTEGER}
     </select>
 
 </mapper>
