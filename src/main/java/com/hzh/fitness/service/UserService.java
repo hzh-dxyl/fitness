@@ -54,4 +54,6 @@ public interface UserService {
     int addFollower(int id, int follower) throws Exception;
 
     int deleteFollower(int id, int follower) throws Exception;
+
+    User searchUserById(int id) throws Exception;
 }

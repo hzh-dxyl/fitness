@@ -112,6 +112,17 @@ public class UserController {
         return MyResponse.createResponseBySuccess("success", ret);
     }
 
+    @GetMapping("/id/{id}")
+    public MyResponse<User> searchUser(@PathVariable int id) throws Exception {
+        User ret = userService.searchUserById(id);
+        ret.setPwdHex(null);
+        ret.setImgHex(null);
+        if (ret.getId() == 0) {
+            return MyResponse.createResponseByError("不存在该用户");
+        }
+        return MyResponse.createResponseBySuccess("success", ret);
+    }
+
     @PostMapping("/{id}/followers/{follower}")
     public MyResponse<JSONObject> addFollowerWithToken(@PathVariable int id, @PathVariable int follower) throws Exception {
         int i = userService.addFollower(id, follower);

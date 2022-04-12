@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
             user.setImgHex(hex);
             hex = userMapper.selectHex(user.getImgHex());
             if (hex == null) {
-                FileUtils.bytesToFile(imgData, GlobalConstant.IMAGE_ROOT + "/head/", user.getImg());
+                FileUtils.bytesToFile(imgData, GlobalConstant.IMAGE_ROOT + "/", user.getImg());
             }
         }
         result = userMapper.insertUser(user);
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
             user.setImg("head/" + hex + "." + ImageType.getExt(user.getImg()));
             hex = userMapper.selectHex(user.getImgHex());
             if (hex == null) {
-                FileUtils.bytesToFile(imgData, GlobalConstant.IMAGE_ROOT + "/head/", user.getImg());
+                FileUtils.bytesToFile(imgData, GlobalConstant.IMAGE_ROOT + "/", user.getImg());
             }
         } else {
             user.setImg(null);
@@ -86,6 +86,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User searchUser(String phone) throws Exception {
         return userMapper.selectUserByPhone(phone);
+    }
+
+    @Override
+    public User searchUserById(int id) throws Exception {
+        return userMapper.selectUserById(id);
     }
 
     @Override
