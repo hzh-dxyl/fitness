@@ -104,7 +104,7 @@
     <select id="selectFollowArticles" parameterType="int" resultMap="ArticleMap">
         select *
         from articles
-        where id in (select user_id from follow where follower = #{id,jdbcType=INTEGER})
+        where user_id in (select user_id from follow where follower = #{id,jdbcType=INTEGER})
         order by create_time desc
         limit ${(page-1)*perPage},${perPage}
     </select>
@@ -112,7 +112,7 @@
     <select id="selectPersonalArticles" resultMap="ArticleMap">
         select *
         from articles
-        where id = #{id}
+        where user_id = #{id}
         order by create_time desc
         limit ${(page-1)*perPage},${perPage}
     </select>
