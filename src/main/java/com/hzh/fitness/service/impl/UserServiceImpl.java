@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
             user.setImgHex(hex);
             hex = userMapper.selectHex(user.getImgHex());
             if (hex == null) {
-                FileUtils.bytesToFile(imgData, GlobalConstant.IMAGE_ROOT + "/", user.getImg());
+                FileUtils.bytesToFile(imgData, GlobalConstant.IMAGE_ROOT + "/", user.getImg(), false);
             }
         }
         result = userMapper.insertUser(user);
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
             user.setImg("head/" + hex + "." + ImageType.getExt(user.getImg()));
             hex = userMapper.selectHex(user.getImgHex());
             if (hex == null) {
-                FileUtils.bytesToFile(imgData, GlobalConstant.IMAGE_ROOT + "/", user.getImg());
+                FileUtils.bytesToFile(imgData, GlobalConstant.IMAGE_ROOT + "/", user.getImg(), false);
             }
         } else {
             user.setImg(null);

@@ -36,7 +36,7 @@ public class FileUtils {
         return buffer;
     }
 
-    public static File bytesToFile(byte[] bfile, String filePath, String fileName) {
+    public static File bytesToFile(byte[] bfile, String filePath, String fileName, boolean saveRepeated) {
         BufferedOutputStream bos = null;
         FileOutputStream fos = null;
         File file = null;
@@ -48,6 +48,7 @@ public class FileUtils {
             }
             int i = 1;
             while (file.exists()) {
+                if (!saveRepeated) return file;
                 String newName = fileName.split("\\.")[0] + "(" + i + ")." + fileName.split("\\.")[1];
                 i++;
                 file = new File(filePath, newName);

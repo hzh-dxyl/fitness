@@ -36,10 +36,10 @@ public class ArticleServiceImpl implements ArticleService {
                 String hex = FileUtils.sha1String(imgData[i]);
                 String suffix = "." + imgs[i].split("\\.")[1];
                 if (articleMapper.selectImgHex(hex) == null)
-                    FileUtils.bytesToFile(imgData[i], GlobalConstant.IMAGE_ROOT + "/articleImg/", hex + suffix);
+                    FileUtils.bytesToFile(imgData[i], GlobalConstant.IMAGE_ROOT + "/articleImg/", hex + suffix, false);
                 articleImgs[i] = new ArticleImg(article.getId(), hex + suffix, FileUtils.sha1String(imgData[i]));
             }
-            articleMapper.insertArticleImg(articleImgs);
+            articleMapper.insertArticleImg(articleImgs,article.getId());
         }
         return articleMapper.selectArticleById(article.getId());
     }

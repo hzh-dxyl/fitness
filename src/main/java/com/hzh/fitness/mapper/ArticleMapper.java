@@ -16,7 +16,7 @@ public interface ArticleMapper {
 
     int insertArticle(Article article);
 
-    int insertArticleImg(ArticleImg[] imgs);
+    int insertArticleImg(@Param("array") ArticleImg[] imgs, @Param("articleId") int articleId);
 
     String selectImgHex(String imgHex);
 
