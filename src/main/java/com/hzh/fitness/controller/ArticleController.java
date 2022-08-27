@@ -33,7 +33,8 @@ public class ArticleController {
     }
 
     @PostMapping("")
-    public MyResponse<Article> createArticleWithToken(@RequestBody Article article) throws Exception {
+    public MyResponse<Article> createArticleWithToken(@RequestBody JSONObject data) throws Exception {
+        Article article = JSONObject.toJavaObject(data, Article.class);
         //需要的参数：userId,text,img[],imgData[],isShare,shareArticle
         if (article.getImgData() != null && article.getImg() == null) {
             throw new GlobalException("没有图片名信息！");

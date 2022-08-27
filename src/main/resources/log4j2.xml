@@ -27,7 +27,7 @@
                     pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread][%file:%line] %logger{36}: %method - %msg%n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy/>
-                <SizeBasedTriggeringPolicy size="10 MB"/>
+                <SizeBasedTriggeringPolicy size="20 MB"/>
             </Policies>
             <DefaultRolloverStrategy max="20"/>
         </RollingRandomAccessFile>
@@ -40,6 +40,9 @@
             <AppenderRef ref="running-log"/>
         </logger>
         <logger name="org.springframework.core" level="debug" additivity="false">
+            <AppenderRef ref="ConsoleDefault"/>
+        </logger>
+        <logger name="com.hzh.fitness.mapper" level="info" additivity="false">
             <AppenderRef ref="ConsoleDefault"/>
         </logger>
 <!--        <logger name="org.springframework.beans" level="debug" additivity="false">-->

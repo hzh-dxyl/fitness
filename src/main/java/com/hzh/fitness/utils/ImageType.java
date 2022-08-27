@@ -12,6 +12,7 @@ public enum ImageType {
      * 枚举类型为各种图片格式
      */
     ImageJpg("jpg", "image/jpeg", "FFD8FF"),
+    ImageJpeg("jpeg", "image/jpeg", "FFD8FF"),
     ImageGif("gif", "image/gif", "47494638"),
     ImagePng("png", "image/png", "89504E47"),
     ImageWebp("webp", "image/webp", "52494646");

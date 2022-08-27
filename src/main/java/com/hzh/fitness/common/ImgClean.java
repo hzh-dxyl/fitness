@@ -24,7 +24,7 @@ public class ImgClean {
     protected ArticleMapper articleMapper;
 
 
-    @Scheduled(cron = "0 0 4 ? * sat")//每周六凌晨4点执行一次清理无用图片
+    @Scheduled(cron = "0 0 */4 * * ?")
     public void cleanImgScheduled() {
         logger.info("清理无用图片");
         int count = 0;
