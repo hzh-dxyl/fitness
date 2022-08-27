@@ -20,7 +20,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -41,10 +43,18 @@ public class ControllerAspect {
         HttpServletRequest request = sa.getRequest();
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Object[] paras = joinPoint.getArgs();
-        Type[] types = signature.getMethod().getGenericParameterTypes();
         logger.info(request.getMethod() + " \"" + request.getRequestURI() + "\" from " + request.getRemoteAddr() +
                 " call to " + signature.toShortString());
-        logger.info("方法参数: " + JSON.toJSONString(formatParas(paras, types)));
+        Parameter[] parameters = signature.getMethod().getParameters();
+        ArrayList<Object> jsonParas = new ArrayList<>();
+        for (int i = 0; i < paras.length; i++) {
+            if (parameters[i].getAnnotation(Ignore2Json.class) == null) {
+                jsonParas.add(paras[i]);
+            } else {
+                jsonParas.add(paras[i].getClass().getName());
+            }
+        }
+        logger.info("方法参数: " + JSON.toJSONString(jsonParas));
         return joinPoint.proceed();
     }
 

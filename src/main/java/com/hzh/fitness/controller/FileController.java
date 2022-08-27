@@ -1,5 +1,6 @@
 package com.hzh.fitness.controller;
 
+import com.hzh.fitness.aspect.Ignore2Json;
 import com.hzh.fitness.common.GlobalConstant;
 import com.hzh.fitness.exception.GlobalException;
 import com.hzh.fitness.utils.FileUtils;
@@ -29,7 +30,7 @@ public class FileController {
     protected static Log logger = LogFactory.getLog(FileController.class);
 
     @RequestMapping("/images/head/{img}")
-    public void getHead(@PathVariable String img, HttpServletResponse response) throws Exception {
+    public void getHead(@PathVariable String img, @Ignore2Json HttpServletResponse response) throws Exception {
         if (!ImageType.isImageName(img)) {
             throw new GlobalException("invalid image name");
         }
@@ -45,7 +46,7 @@ public class FileController {
     }
 
     @RequestMapping("/images/articleImg/{img}")
-    public void getArticleImg(@PathVariable String img, HttpServletResponse response) throws Exception {
+    public void getArticleImg(@PathVariable String img, @Ignore2Json HttpServletResponse response) throws Exception {
         if (ImageType.isImageName(img)) {
             ImageType type = ImageType.getEnum(img);
             String path = GlobalConstant.IMAGE_ROOT + "/articleImg/" + img;
@@ -70,7 +71,7 @@ public class FileController {
     }
 
     @RequestMapping("/files/{filename}")
-    public void getFile(@PathVariable String filename, HttpServletResponse response) throws Exception {
+    public void getFile(@PathVariable String filename, @Ignore2Json HttpServletResponse response) throws Exception {
         String path = GlobalConstant.IMAGE_ROOT + "/" + filename;
         logger.info("文件路径: " + path);
         File file = new File(path);
@@ -82,7 +83,7 @@ public class FileController {
     }
 
     @RequestMapping("/videos/{filename}")
-    public void getVideo(@PathVariable String filename, HttpServletResponse response) throws Exception {
+    public void getVideo(@PathVariable String filename, @Ignore2Json HttpServletResponse response) throws Exception {
         File file = new File(GlobalConstant.VIDEO_ROOT + "/" + filename);
         response.setContentType("video/mp4;charset=utf-8");
         OutputStream out = response.getOutputStream();
